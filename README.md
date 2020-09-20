@@ -2,8 +2,8 @@
 how to create NFT's and populate them with additional attributes
 ## Installation procedure
 ```shell
-git clone https://github.com/matprime/meme-of-the-day-dApp
-cd meme-of-the-day-dApp
+git clone https://github.com/ERC-721_NFT_creation_demo
+cd ERC-721_NFT_creation_demo
 npm install
 ```
 ## Compiling smart contract, deployment to blockchain and test
