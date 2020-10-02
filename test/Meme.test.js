@@ -1,14 +1,14 @@
-const Color = artifacts.require('./Color.sol')
+const Meme = artifacts.require('./Meme.sol')
 
 require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('Color', (accounts) => {
+contract('Meme', (accounts) => {
   let contract
 
   before(async () => {
-    contract = await Color.deployed()
+    contract = await Meme.deployed()
   })
 
   describe('deployment', async () => {
@@ -22,12 +22,12 @@ contract('Color', (accounts) => {
 
     it('has a name', async () => {
       const name = await contract.name()
-      assert.equal(name, 'Color')
+      assert.equal(name, 'Meme')
     })
 
     it('has a symbol', async () => {
       const symbol = await contract.symbol()
-      assert.equal(symbol, 'COLOR')
+      assert.equal(symbol, 'MTD')
     })
 
   })
@@ -35,7 +35,7 @@ contract('Color', (accounts) => {
   describe('minting', async () => {
 
     it('creates a new token', async () => {
-      const result = await contract.mint('#EC058E')
+      const result = await contract.mint('ECEA058EF4523')
       const totalSupply = await contract.totalSupply()
       // SUCCESS
       assert.equal(totalSupply, 1)
@@ -45,27 +45,27 @@ contract('Color', (accounts) => {
       assert.equal(event.to, accounts[0], 'to is correct')
 
       // FAILURE: cannot mint same color twice
-      await contract.mint('#EC058E').should.be.rejected;
+      await contract.mint('ECEA058EF4523').should.be.rejected;
     })
   })
 
   describe('indexing', async () => {
-    it('lists colors', async () => {
+    it('lists tokenIDs', async () => {
       // Mint 3 more tokens
-      await contract.mint('#5386E4')
-      await contract.mint('#FFFFFF')
-      await contract.mint('#000000')
+      await contract.mint('5386E4EABC345')
+      await contract.mint('FFF567EAB5FFF')
+      await contract.mint('234AEC00EFFD0')
       const totalSupply = await contract.totalSupply()
 
-      let color
+      let tokenID
       let result = []
 
       for (var i = 1; i <= totalSupply; i++) {
-        color = await contract.colors(i - 1)
-        result.push(color)
+        tokenID = await contract.tokenIDs(i - 1)
+        result.push(tokenID)
       }
 
-      let expected = ['#EC058E', '#5386E4', '#FFFFFF', '#000000']
+      let expected = ['ECEA058EF4523', '5386E4EABC345', 'FFF567EAB5FFF', '234AEC00EFFD0']
       assert.equal(result.join(','), expected.join(','))
     })
   })

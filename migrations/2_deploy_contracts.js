@@ -1,5 +1,5 @@
-const Color = artifacts.require("Color");
+const Meme = artifacts.require("Meme");
 
 module.exports = function(deployer) {
-  deployer.deploy(Color);
+  deployer.deploy(Meme);
 };
