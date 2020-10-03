@@ -34,7 +34,7 @@ contract('Meme', (accounts) => {
 
   describe('minting', async () => {
 
-    it('creates a new token', async () => {
+    it('creates a new NFT token', async () => {
       const result = await contract.mint('ECEA058EF4523')
       const totalSupply = await contract.totalSupply()
       // SUCCESS
@@ -44,20 +44,20 @@ contract('Meme', (accounts) => {
       assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
       assert.equal(event.to, accounts[0], 'to is correct')
 
-      // FAILURE: cannot mint same color twice
+      // FAILURE: cannot mint same hash twice
       await contract.mint('ECEA058EF4523').should.be.rejected;
     })
   })
 
   describe('indexing', async () => {
     it('lists hashes', async () => {
-      // Mint 3 more tokens
+      // Mint 3 more NFT tokens
       await contract.mint('5386E4EABC345')
       await contract.mint('FFF567EAB5FFF')
       await contract.mint('234AEC00EFFD0')
       const totalSupply = await contract.totalSupply()
 
-      let tokenID
+      let hash
       let result = []
 
       for (var i = 1; i <= totalSupply; i++) {
