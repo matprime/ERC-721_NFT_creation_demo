@@ -39,7 +39,7 @@ contract('Meme', (accounts) => {
       const totalSupply = await contract.totalSupply()
       // SUCCESS
       assert.equal(totalSupply, 1)
-      const event = result.logs[0].args      
+      const event = result.logs[0].args
       assert.equal(event.tokenId.toNumber(), 1, 'id is correct')
       assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
       assert.equal(event.to, accounts[0], 'to is correct')
@@ -50,7 +50,7 @@ contract('Meme', (accounts) => {
   })
 
   describe('indexing', async () => {
-    it('lists tokenIDs', async () => {
+    it('lists hashes', async () => {
       // Mint 3 more tokens
       await contract.mint('5386E4EABC345')
       await contract.mint('FFF567EAB5FFF')
@@ -61,8 +61,8 @@ contract('Meme', (accounts) => {
       let result = []
 
       for (var i = 1; i <= totalSupply; i++) {
-        tokenID = await contract.hashes(i - 1)
-        result.push(tokenID)
+        hash = await contract.hashes(i - 1)
+        result.push(hash)
       }
 
       let expected = ['ECEA058EF4523', '5386E4EABC345', 'FFF567EAB5FFF', '234AEC00EFFD0']

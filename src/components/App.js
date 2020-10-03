@@ -38,11 +38,14 @@ class App extends Component {
       this.setState({ contract })
       const totalSupply = await contract.methods.totalSupply().call()
       this.setState({ totalSupply })
-      // Load Colors
+      console.log('total supply')
+      console.log(totalSupply)
+      // Load hashes
       for (var i = 1; i <= totalSupply; i++) {
-        const tokenID = await contract.methods.tokenIDs(i - 1).call()
+        const hash = await contract.methods.hashes(i - 1).call()
+        console.log(hash)
         this.setState({
-          tokenIDs: [...this.state.tokenIDs, tokenID]
+          hashes: [...this.state.hashes, hash]
         })
       }
     } else {
@@ -54,7 +57,7 @@ class App extends Component {
     this.state.contract.methods.mint(hash).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({
-        colors: [...this.state.tokenIDs, hash]
+        hashes: [...this.state.hashes, hash]
       })
     })
     console.log("mint is done")
@@ -66,7 +69,7 @@ class App extends Component {
       account: '',
       contract: null,
       totalSupply: 0,
-      colors: []
+      hashes: []
     }
   }
 
@@ -92,17 +95,17 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-                <h1>Issue Token</h1>
+                <h1>Issue NFT Token</h1>
                 <form onSubmit={(event) => {
                   event.preventDefault()
-                  const color = this.color.value
-                  this.mint(color)
+                  const hash = this.hash.value
+                  this.mint(hash)
                 }}>
                   <input
                     type='text'
                     className='form-control mb-1'
-                    placeholder='e.g. #FFFFFF'
-                    ref={(input) => { this.color = input }}
+                    placeholder='enter file hash e.g. ECEA058EF4523'
+                    ref={(input) => { this.hash = input }}
                   />
                   <input
                     type='submit'
@@ -115,11 +118,10 @@ class App extends Component {
           </div>
           <hr/>
           <div className="row text-center">
-            { this.state.colors.map((color, key) => {
+            { this.state.hashes.map((hash, key) => {
               return(
                 <div key={key} className="col-md-3 mb-3">
-                  <div className="token" style={{ backgroundColor: color }}></div>
-                  <div>{color}</div>
+                  <div>{hash}</div>
                 </div>
               )
             })}
