@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3'
 import './App.css';
-import Color from '../abis/Color.json'
+import Meme from '../abis/Meme.json'
 
 class App extends Component {
 
@@ -30,9 +30,9 @@ class App extends Component {
     this.setState({ account: accounts[0] })
 
     const networkId = await web3.eth.net.getId()
-    const networkData = Color.networks[networkId]
+    const networkData = Meme.networks[networkId]
     if (networkData) {
-      const abi = Color.abi
+      const abi = Meme.abi
       const address = networkData.address
       const contract = new web3.eth.Contract(abi, address)
       this.setState({ contract })
@@ -40,9 +40,9 @@ class App extends Component {
       this.setState({ totalSupply })
       // Load Colors
       for (var i = 1; i <= totalSupply; i++) {
-        const color = await contract.methods.colors(i - 1).call()
+        const tokenID = await contract.methods.tokenIDs(i - 1).call()
         this.setState({
-          colors: [...this.state.colors, color]
+          tokenIDs: [...this.state.tokenIDs, tokenID]
         })
       }
     } else {
@@ -50,11 +50,11 @@ class App extends Component {
     }
   }
 
-  mint = (color) => {
-    this.state.contract.methods.mint(color).send({ from: this.state.account })
+  mint = (hash) => {
+    this.state.contract.methods.mint(hash).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({
-        colors: [...this.state.colors, color]
+        colors: [...this.state.tokenIDs, hash]
       })
     })
     console.log("mint is done")
@@ -80,7 +80,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Color Tokens
+            NFT Tokens DEMO
           </a>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">

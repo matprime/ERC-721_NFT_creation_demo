@@ -39,7 +39,7 @@ contract('Meme', (accounts) => {
       const totalSupply = await contract.totalSupply()
       // SUCCESS
       assert.equal(totalSupply, 1)
-      const event = result.logs[0].args
+      const event = result.logs[0].args      
       assert.equal(event.tokenId.toNumber(), 1, 'id is correct')
       assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'from is correct')
       assert.equal(event.to, accounts[0], 'to is correct')
@@ -61,7 +61,7 @@ contract('Meme', (accounts) => {
       let result = []
 
       for (var i = 1; i <= totalSupply; i++) {
-        tokenID = await contract.tokenIDs(i - 1)
+        tokenID = await contract.hashes(i - 1)
         result.push(tokenID)
       }
 
